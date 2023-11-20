@@ -52,7 +52,7 @@ Welcome to the Parking Management System GitHub repository! This project is a co
   
   <img alt="Loading Screenshots..." width="60%" src="https://github.com/TarushGupta23/storage/blob/main/parkingManagementSystem_ER.jpeg">
    
-3. **Relational Schema**
+2. **Relational Schema**
   
   <img alt="Loading Screenshots..." width="60%" src="https://github.com/TarushGupta23/storage/blob/main/parkingManagementSystem_relational.jpeg">
 
