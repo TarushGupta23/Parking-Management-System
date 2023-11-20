@@ -23,7 +23,7 @@ Welcome to the Parking Management System GitHub repository! This project is a co
 
 1. **Setup Xampp**
     - download [XAMPP](https://www.apachefriends.org/download.html).
-    - start Apache and Mysql server in Xampp *|if sql server doesnot runs: stop sql running in background via task manager or (for mac users) `sudo killall mysqld` command in terminal|*
+    - start Apache and Mysql server in Xampp *if sql server doesnot runs: stop sql running in background via task manager or (for mac users) `sudo killall mysqld` command in terminal*
     - run localhost in browser to check if Xampp is running
 
 2. **Clone the Repository:**
