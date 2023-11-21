@@ -13,6 +13,10 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
+    if ($email == "admin@gmail.com" && $password == "admin") {
+        header("Location: ./../admin.php");
+        exit();
+    }
 
     $sql = "SELECT email, password FROM costumers WHERE email='$email' AND password='$password'" ;
 
