@@ -41,6 +41,8 @@ Welcome to the Parking Management System GitHub repository! This project is a co
 
 5. **Access the Application:**
     - run `index.html`
+    - to login as administrator use `admin@gmail.com` and password: `admin`
+
 
 ## Screenshots 📸
 
@@ -56,4 +58,4 @@ Welcome to the Parking Management System GitHub repository! This project is a co
   
   <img alt="Loading Screenshots..." width="60%" src="https://github.com/TarushGupta23/storage/blob/main/parkingManagementSystem_relational.jpeg">
 
-Feel free to explore, contribute, and enhance the Parking Management System! If you have any issues or suggestions, please open an [issue](https://github.com/your-username/parking-management-system/issues).
+Feel free to explore, contribute, and enhance the Parking Management System! If you have any issues or suggestions, please open an [issue](https://github.com/TarushGupta23/Parking-Management-System/issues).
