@@ -6,32 +6,24 @@
     <title>Document</title>
     <link rel="stylesheet" href="./css/main.css">
 </head>
+<?php 
+    include("./partial/connection.php"); 
+    include("./partial/session.php");
+?>
+<?php 
+    $sql1 = "SELECT COUNT(*) as num FROM costumers";
+    $result1 = $conn->query($sql1);
+    $row1 = mysqli_fetch_assoc($result1);
+
+    $sql2 = "SELECT COUNT(*) as num FROM slots";
+    $result2 = $conn->query($sql2);
+    $row2 = mysqli_fetch_assoc($result2);
+
+    $sql3 = "SELECT COUNT(*) as num FROM slots where isBooked = 0";
+    $result3 = $conn->query($sql3);
+    $row3 = mysqli_fetch_assoc($result3);
+?>
 <body>
-<!-- <div class="bubbles">
-    
-    <div id="b1" style="--i:42; --j:15; background-color: aqua; transform: scale(6)"></div>
-    <div id="b2" style="--i:87; --j:73; background-color:burlywood; transform: scale(5)"></div>
-    <div id="b3" style="--i:19; --j:89; background-color:chartreuse; transform: scale(1)"></div>
-    <div id="b4" style="--i:55; --j:42; background-color:yellow; transform: scale(3)"></div>
-    <div id="b5" style="--i:68; --j:27; background-color:violet; transform: scale(2)"></div>
-    <div id="b6" style="--i:93; --j:9; background-color:turquoise; transform: scale(3.3)"></div>
-    <div id="b7" style="--i:12; --j:58; background-color:coral; transform: scale()"></div>
-    <div id="b8" style="--i:75; --j:81; background-color:crimson; transform: scale()"></div>
-    <div id="b9" style="--i:36; --j:96; background-color:deeppink; transform: scale(8)"></div>
-    <div id="b10" style="--i:8; --j:35; background-color:darkorange; transform: scale(5)"></div>
-    <div id="b11" style="--i:61; --j:74; background-color:forestgreen; transform: scale()"></div>
-    <div id="b12" style="--i:29; --j:52; background-color:goldenrod; transform: scale()"></div>
-    <div id="b13" style="--i:83; --j:17; background-color:honeydew; transform: scale()"></div>
-    <div id="b14" style="--i:5; --j:9; background-color: turquois; transform: scale()"></div>
-    <div id="b15" style="--i:47; --j:63; background-color:greenyellow; transform: scale()"></div>
-    <div id="b17" style="--i:39; --j:28; background-color:skyblue; transform: scale()"></div>
-    <div id="b18" style="--i:88; --j:46; background-color:cornsilk; transform: scale()"></div>
-    <div id="b19" style="--i:15; --j:28; background-color:springgreen; transform: scale()"></div>
-    <div id="b20" style="--i:30; --j:6; background-color:crimson; transform: scale()"></div>
-    <div id="b20" style="--i:37; --j:79; background-color:yellow; transform: scale()"></div>
-
-</div> -->
-
 <div class="bg-cars">
     <img src="./res/1234.jpg" alt="">
 </div>
@@ -42,9 +34,11 @@
             <li id="active">Home</li>
             <li onclick="window.location.href='user.php'">Profile</li>
             <li onclick="window.location.href='bookslot.php'">Book Slot</li>
-            <li onclick="window.location.href='index.html';">Log Out</li>
+            <li onclick="window.location.href='./php/logout.php'">Log Out</li>
         </ul>
     </nav>
+
+
     <div class="top-container">
         <div class="top">
             <div class="info">
@@ -57,46 +51,25 @@
             </div>
         </div>
     </div>
+
+
     <div class="data-container">
         <div class="data-flex">
             <div class="data">
-                <?php 
-                session_start();
-            $servername = "localhost";
-            $username = "root";
-            $pwd = "";
-            $dbname = "ParkingManagement";
-            
-            $conn = new mysqli($servername, $username, $pwd, $dbname);
-            
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-            $sql = "SELECT COUNT(*) as num FROM costumers";
-            $result = $conn->query($sql);
-            $row = mysqli_fetch_assoc($result);
-
-            $sql = "SELECT COUNT(*) as num FROM slots";
-            $result = $conn->query($sql);
-            $row2 = mysqli_fetch_assoc($result);
-
-            $sql = "SELECT COUNT(*) as num FROM slots where isBooked = 0";
-            $result = $conn->query($sql);
-            $row3 = mysqli_fetch_assoc($result);
-            echo "<div id='availableSlots' class='data-item'>
+            <div id='availableSlots' class='data-item'>
                     <h3>slots available</h3>
-                    <h1>{$row3['num']}</h1>
+                    <h1><?php echo $row3['num'];?></h1>
                     
                 </div>
                 <div id='currVehicles' class='data-item'>
                     <h3>total slots</h3>
-                    <h1>{$row2['num']}</h1>
+                    <h1><?php echo $row2['num'];?></h1>
                 </div>
                 <div id='totalUsers' class='data-item'>
                     <h3>total customers</h3>
-                    <h1>{$row['num']}</h1>
-                </div>";
-            ?>
+                    <h1><?php echo $row1['num'] ?></h1>
+                </div>
+            
                 
             </div>
             <div class="collab data-item">
@@ -113,46 +86,31 @@
     <div class="mid-container">
     <div class="map-container solid-glass">
     <?php 
-        session_start();
-        $servername = "localhost";
-        $username = "root";
-        $pwd = "";
-        $dbname = "ParkingManagement";
-        
-        $conn = new mysqli($servername, $username, $pwd, $dbname);
-        
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
         for ($x = 1; $x <= 4; $x++) {
             $sql = "SELECT * FROM slots where floor=$x";
             $result = $conn->query($sql);
 
             echo "<div class='map-grid' id='$x'>";
             while ($row = mysqli_fetch_assoc($result)) {
-                // if ($row['isBooked'] == 1) {
-                //     $classes .= 'slot-booked';
-                // } else {
-                //     $classes = "";
-                // }
                 if ($row['type'] == 2) {
                     $svg = '<svg fill="#000000" height="30px" width="30px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>bike1</title> <path d="M24 9h-4v-2h4c0.552 0 1 0.447 1 1 0 0.552-0.448 1-1 1zM21 0c0-1.657-1.343-3-3-3h-5c-1.657 0-3 1.343-3 3v6h-1v-6c0-2.209 1.791-4 4-4h5c2.209 0 4 1.791 4 4v6h-1v-6zM11 9h-4c-0.553 0-1-0.448-1-1 0-0.553 0.447-1 1-1h4v2zM15.5 11.5c-1.934 0-3.5-1.567-3.5-3.5 0-1.934 1.566-3.5 3.5-3.5s3.5 1.566 3.5 3.5c0 1.933-1.567 3.5-3.5 3.5zM15.5 6c-1.104 0-2 0.896-2 2s0.896 2 2 2 2-0.896 2-2-0.896-2-2-2zM12.112 10.106c0.706 1.133 1.954 1.894 3.388 1.894s2.681-0.761 3.388-1.894c1.78 0.405 3.112 1.991 3.112 3.894v10c0 1.861-1.278 3.412-3 3.858v-5.421c0-1.933-1.567-3.5-3.5-3.5s-3.5 1.567-3.5 3.5v5.421c-1.723-0.446-3-1.997-3-3.858v-10c0-1.903 1.332-3.489 3.112-3.894zM15.5 20c1.381 0 2.5 1.119 2.5 2.5v7c0 1.381-1.119 2.5-2.5 2.5s-2.5-1.119-2.5-2.5v-7c0-1.381 1.119-2.5 2.5-2.5z"></path> </g></svg>';
                 } else {
                     $svg = '<svg fill="#000000" height="30px" width="30px" viewBox="-4 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>car</title> <path d="M19.938 7.188l3.563 7.156c0.063 0.094 0.094 0.219 0.125 0.313 0.219 0.563 0.375 1.344 0.375 1.844v3.406c0 1.063-0.719 1.938-1.719 2.188v2c0 0.969-0.781 1.719-1.719 1.719-0.969 0-1.719-0.75-1.719-1.719v-1.938h-13.688v1.938c0 0.969-0.75 1.719-1.719 1.719-0.938 0-1.719-0.75-1.719-1.719v-2c-1-0.25-1.719-1.125-1.719-2.188v-3.406c0-0.5 0.156-1.281 0.375-1.844 0.031-0.094 0.063-0.219 0.125-0.313l3.563-7.156c0.281-0.531 1.031-1.031 1.656-1.031h12.563c0.625 0 1.375 0.5 1.656 1.031zM5.531 9.344l-1.906 4.344c-0.094 0.156-0.094 0.344-0.094 0.469h16.938c0-0.125 0-0.313-0.094-0.469l-1.906-4.344c-0.25-0.563-1-1.063-1.594-1.063h-9.75c-0.594 0-1.344 0.5-1.594 1.063zM4.688 19.906c1 0 1.781-0.813 1.781-1.844 0-1-0.781-1.781-1.781-1.781s-1.844 0.781-1.844 1.781c0 1.031 0.844 1.844 1.844 1.844zM19.313 19.906c1 0 1.844-0.813 1.844-1.844 0-1-0.844-1.781-1.844-1.781s-1.781 0.781-1.781 1.781c0 1.031 0.781 1.844 1.781 1.844z"></path> </g></svg>';
                 }
-                echo "
-                <div class='slot slot-{$row['type']}'>
+    ?>
+                <div class='slot slot-<?php echo $row['type']?>'>
                     <div class='slot-holder'>
-                        $svg
-                        {$row['slotId']}
+                    <?php
+                        echo $svg;
+                        echo $row['slotId'];
+                    ?>
                     </div>
                 </div>
-                ";
-            }
-            echo "</div>";
-        }
-    ?>
+            <?php } ?>
+            </div>
+        <?php } ?>
     </div>
+
         <div class="floor-container solid-glass">
             <div id="f1" class="radio-div current" onclick="showDiv(1)"> floor 0 </div>
             <div id="f2" class="radio-div" onclick="showDiv(2)"> floor 1 </div>
@@ -160,49 +118,38 @@
             <div id="f4" class="radio-div" onclick="showDiv(4)"> floor 3 </div>
         </div>
     </div>
+
+
+    <div class='table-vehicles-parked table-container'> 
+        <h1>Reviews From Others</h1>
     <?php
-        session_start(); // Start the session to use session variables
-        if(isset($_SESSION['user_email'])) {
-            $userEmail = $_SESSION['user_email'];
-            $servername = "localhost";
-            $username = "root";
-            $pwd = "";
-            $dbname = "ParkingManagement";
-
-            $conn = new mysqli($servername, $username, $pwd, $dbname);
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-            $sql3 = "SELECT * FROM `reviews` where user <> '$userEmail'";
-            $result = $conn->query($sql3);
-            echo "<div class='table-vehicles-parked table-container'> <h1>Reviews From Others</h1>";
-            if ($result->num_rows == 0) {
-                echo '<div style="margin-top:20px; font-size:2em;">error loading reviews</div>';
-            } else {
-                echo "<table border='1'>
-                    <tr>
-                        <th>Customer</th>
-                        <th>Review</th>
-                        <th>Date</th>
-                    </tr>";
-                    
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $sql0 = "SELECT * FROM `costumers` where email='{$row['user']}'";
-                        $result0 = $conn->query($sql0);
-                        while ($row0 = mysqli_fetch_assoc($result0)) {
-                            echo "<tr>
-                                <td>{$row0['name']}</td>
-                                <td>{$row['comment']}</td>
-                                <td>{$row['date']}</td>
-                            </tr>";
-                        }
-                        
-                    }
-                echo "</table></div>";
-            }
-        }
-    ?>
+        $sql = "SELECT * FROM `reviews` where user <> '$userEmail'";
+        $result = $conn->query($sql);
+        if ($result->num_rows == 0) { ?>
+        <div style="margin-top:20px; font-size:2em;">error loading reviews</div>
+    <?php } else { ?>
+            <table border='1'>
+                <tr>
+                    <th>Customer</th>
+                    <th>Review</th>
+                    <th>Date</th>
+                </tr>
+    <?php
+        while ($row = mysqli_fetch_assoc($result)) {
+            $sql0 = "SELECT * FROM `costumers` where email='{$row['user']}'";
+            $result0 = $conn->query($sql0);
+            while ($row0 = mysqli_fetch_assoc($result0)) { ?>
+                <tr>
+                    <td><?php echo $row0['name']; ?></td>
+                    <td><?php echo $row['comment']; ?></td>
+                    <td><?php echo $row['date']; ?></td>
+                </tr>
+    <?php
+            } 
+        } ?>
+            </table>
+        </div>
+<?php } ?>
 </div>
 <script>
 function showDiv(divNumber) {
