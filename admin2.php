@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Parking Management</title>
     <link rel="stylesheet" href="./css/user.css">
 </head>
+<?php
+include("./partial/connection.php");
+include("./partial/session.php");
+?>
 <body>
 <div class="bg-cars">
     <img src="./res/1234.jpg" alt="">
-</div>
+</div>  
 <div class="body">
     <nav>
         <div class="title">Parking Management System</div>
@@ -20,111 +24,54 @@
             <li onclick="window.location.href='index.html';">Log Out</li>
         </ul>
     </nav>
-
     <?php
-            $servername = "localhost";
-            $username = "root";
-            $pwd = "";
-            $dbname = "ParkingManagement";
-
-            $conn = new mysqli($servername, $username, $pwd, $dbname);
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            
-            // $row = mysqli_fetch_assoc($result);
-
-            echo "<div class='name'>Logged in as: Administrator | admin@gmail.com</div>";
-
-            $sql = "SELECT * FROM costumers";
-            $result = $conn->query($sql);
-
-            echo "<div class='table-vehicles-owned table-container'> <h1>Customers</h1>";
-            if ($result->num_rows == 0) {
-                echo '<div style="margin-top:20px; font-size:2em;">No Customers</div>';
-            } else {
-                echo "<table border='1'>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                    </tr>";
+        $sql1 = "SELECT * FROM costumers";
+        $result1 = $conn->query($sql1);
+        $sql2 = "SELECT * FROM reviews";
+        $result2 = $conn->query($sql2); ?>
     
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr onclick=\"pop = document.getElementById('popup-viewUser'); pop.style.display = 'block'; pop.querySelector('label').innerText = '{$row['name']}'; pop.querySelector('#carName').value='{$row['email']}'\">
-                            <td>{$row['name']}</td>
-                            <td>{$row['email']}</td>
-                            <td>{$row['phone']}</td>
-                        </tr>";
-                    }
-                echo "</table></div>";
-            }
+    <div class='name'>Logged in as: Administrator | admin@gmail.com</div>
+        <div class='table-vehicles-owned table-container'> <h1>Customers</h1>
+        <?php if ($result1->num_rows == 0) { ?>
+            <div style="margin-top:20px; font-size:2em;">No Customers</div>
+        <?php } else { ?>
+            <table border='1'>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                </tr>
+            <?php while ($row = mysqli_fetch_assoc($result1)) { ?>
+                <tr onclick=\"pop = document.getElementById('popup-viewUser'); pop.style.display = 'block'; pop.querySelector('label').innerText = '{$row['name']}'; pop.querySelector('#carName').value='{$row['email']}'\">
+                    <td><?php echo $row['name']?></td>
+                    <td><?php echo $row['email']?></td>
+                    <td><?php echo $row['phone']?></td>
+                </tr>
+            <?php } ?>
+            </table>
+        <?php } ?>
+        </div>
+        <div class='table-vehicles-owned table-container'> <h1>Reviews</h1>
+        <?php if ($result2->num_rows == 0) { ?>
+            <div style="margin-top:20px; font-size:2em;">No Reviews</div>
+        <?php } else { ?>
+            <table border='1'>
+                <tr>
+                    <th>User</th>
+                    <th>Comment</th>
+                    <th>Date</th>
+                </tr>
+            <?php while ($row = mysqli_fetch_assoc($result2)) { ?>
+                <tr onclick="pop = document.getElementById('popup-delReview'); pop.style.display = 'block'; pop.querySelector('label').innerText = '<?php echo $row['comment']?>'; pop.querySelector('#carName').value='<?php echo $row['id']?>'">
+                    <td>{$row['user']}</td>
+                    <td>{$row['comment']}</td>
+                    <td>{$row['date']}</td>
+                </tr>
+            <?php } ?>
+            </table>
+        <?php } ?>
+        </div>
 
-            $sql = "SELECT * FROM reviews";
-            $result = $conn->query($sql);
-
-            echo "<div class='table-vehicles-owned table-container'> <h1>Reviews</h1>";
-            if ($result->num_rows == 0) {
-                echo '<div style="margin-top:20px; font-size:2em;">No Reviews</div>';
-            } else {
-                echo "<table border='1'>
-                    <tr>
-                        <th>User</th>
-                        <th>Comment</th>
-                        <th>Date</th>
-                    </tr>";
-    
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr onclick=\"pop = document.getElementById('popup-delReview'); pop.style.display = 'block'; pop.querySelector('label').innerText = '{$row['comment']}'; pop.querySelector('#carName').value='{$row['id']}'\">
-                            <td>{$row['user']}</td>
-                            <td>{$row['comment']}</td>
-                            <td>{$row['date']}</td>
-                        </tr>";
-                    }
-                echo "</table></div>";
-            }
-
-
-            // for ($x = 1; $x <= 4; $x++) {
-            //     $sql = "SELECT * FROM slots where floor = $x";
-            //     $result = $conn->query($sql);
-    
-            //     echo "<div class='table-vehicles-owned table-container'> <h1>Slots - floor: $x</h1>";
-            //     if ($result->num_rows == 0) {
-            //         echo '<div style="margin-top:20px; font-size:2em;">Error loading slots</div>';
-            //     } else {
-            //         echo "<table border='1'>
-            //             <tr>
-            //                 <th>Slot Id</th>
-            //                 <th>Slot Type</th>
-            //                 <th>Booked By</th>
-            //                 <th>Booked Till</th>
-            //             </tr>";
-        
-            //             while ($row = mysqli_fetch_assoc($result)) {
-            //                 if ($row['isBooked'] == 0) {
-            //                     echo "<tr>
-            //                         <td>{$row['slotId']}</td>
-            //                         <td>{$row['type']}</td>";
-            //                     echo "<td> - </td>
-            //                         <td> - </td>
-            //                         </tr>";
-            //                 } else {
-            //                     echo "<tr onclick=\"pop = document.getElementById('popup-freeSlot'); pop.style.display = 'block'; pop.querySelector('h2').innerText = '{$row['slotId']}'; pop.querySelector('#carName').value='{$row['slotId']}'\">
-            //                         <td>{$row['slotId']}</td>
-            //                         <td>{$row['type']}</td>";
-            //                     echo "<td>{$row['bookedBy']}</td>
-            //                         <td>{$row['bookedTill']}</td>
-            //                     </tr>";
-            //                 }
-            //             }
-            //         echo "</table></div>";
-            //     }
-            // }
-            
-    ?>
     <div id="popup-viewUser" class="popup glass">
         <form action="admin3.php" method="post">
             <div class="form-group">
